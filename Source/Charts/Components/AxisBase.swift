@@ -34,7 +34,6 @@ open class AxisBase: ComponentBase
     
     @objc open var labelFont = NSUIFont.systemFont(ofSize: 10.0)
     @objc open var labelTextColor = NSUIColor.labelOrBlack
-    @objc open var labelTextColors : [NSUIColor] = []
     
     @objc open var axisLineColor = NSUIColor.gray
     @objc open var axisLineWidth = CGFloat(0.5)

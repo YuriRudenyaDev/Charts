@@ -134,8 +134,6 @@ open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, BarChartData
     open var barGradientColors: [[NSUIColor]]?
     
     open var barGradientOrientation: BarChartDataSet.BarGradientOrientation = .vertical
-
-    open var barCornerRadius : CGFloat = 0.0
     
     /// - returns: The gradient colors at the given index of the DataSet's gradient color array.
     /// This prevents out-of-bounds by performing a modulus on the gradient color index, so colours will repeat themselves.
