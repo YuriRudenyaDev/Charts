@@ -234,6 +234,12 @@ open class HorizontalBarChartRenderer: BarChartRenderer
         
         let buffer = _buffers[index]
         
+        let isSingleColor = dataSet.colors.count == 1
+        
+        if isSingleColor
+        {
+            context.setFillColor(dataSet.color(atIndex: 0).cgColor)
+        }
 
         // In case the chart is stacked, we need to accomodate individual bars within accessibilityOrdereredElements
         let isStacked = dataSet.isStacked
@@ -253,8 +259,39 @@ open class HorizontalBarChartRenderer: BarChartRenderer
                 continue
             }
             
-            drawBar(context: context, dataSet: dataSet, index: j, barRect: barRect)
+            if !isSingleColor
+            {
+                // Set the color for the currently drawn value. If the index is out of bounds, reuse colors.
+                let colorSpace = CGColorSpaceCreateDeviceRGB()
+                    let colorLocations: [CGFloat] = [0.0, 1.0]
 
+                    let startPoint = CGPoint(x: barRect.minX, y: barRect.midY)
+                    let endPoint = CGPoint(x: barRect.maxX, y: barRect.midY)
+
+                    let gradient = CGGradient(colorsSpace: colorSpace,
+                                              colors: dataSet.colors.map({ $0.cgColor }) as CFArray,
+                                              locations: colorLocations)!
+
+                    // Create a clipping path with rounded corners
+                    let clippingPath = UIBezierPath(roundedRect: barRect, cornerRadius: dataSet.barCornerRadius)
+                    context.addPath(clippingPath.cgPath)
+                    context.clip()
+
+                    // Draw the linear gradient within the clipping path
+                    context.drawLinearGradient(gradient, start: startPoint, end: endPoint, options: [])
+                    context.resetClip()
+            }
+            else
+            {
+
+            //context.fill(barRect)
+            let bezierPath = UIBezierPath(roundedRect: barRect, cornerRadius: dataSet.barCornerRadius)
+            context.addPath(bezierPath.cgPath)
+            context.drawPath(using: .fill)
+            }
+
+            drawBar(context: context, dataSet: dataSet, index: j, barRect: barRect)
+            
             if drawBorder
             {
                 context.setStrokeColor(borderColor.cgColor)
