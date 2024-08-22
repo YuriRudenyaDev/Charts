@@ -402,7 +402,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         {
             if let gradientColor = dataSet.barGradientColor(atIndex: index)
             {
-                drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation)
+                drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, dataSet: dataSet)
             }
         }
         else
